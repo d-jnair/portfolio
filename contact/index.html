@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Durga Nair: Contact Me!</title>
+    <link rel="stylesheet" href="https://d-jnair.github.io/portfolio/style.css">
 </head>
 <body>
     <nav>
         <a href="https://d-jnair.github.io/portfolio/">Home</a>
         <a href="https://d-jnair.github.io/portfolio/cv/index.html">Resume</a>
         <a href="https://d-jnair.github.io/portfolio/projects/index.html">Projects</a>
-        <a href="https://d-jnair.github.io/portfolio/contact/index.html">Contact</a>
+        <a href="https://d-jnair.github.io/portfolio/contact/index.html"
+            class="current" aria-current="page">Contact</a>
         <a href="https://github.com/d-jnair" target="_blank">GitHub</a>
     </nav>
 
@@ -18,25 +20,16 @@
     <p>Fill out the form below to send me an email:</p>
 
     <form action="mailto:dnair@ucsd.edu" method="POST" enctype="text/plain">
-        <label>
-            Your Email:
-            <input type="email" name="email" required>
-        </label>
-        <br><br>
+        <label for="email">Your Email:</label>
+        <input id="email" type="email" name="email" required>
 
-        <label>
-            Subject:
-            <input name="subject" required>
-        </label>
-        <br><br>
+        <label for="subject">Subject:</label>
+        <input id="subject" type="text" name="subject" required>
 
-        <label>
-            Message:
-            <textarea name="body" rows="5" cols="30" required></textarea>
-        </label>
-        <br><br>
+        <label for="Message">Message:</label>
+        <textarea id="Message" name="body" rows="5" required></textarea>
 
-        <button>Send</button>
+        <button type="submit">Send</button>
     </form>
 </body>
 </html>

@@ -4,3 +4,107 @@ body {
         */
     font: 100%/1.5 system-ui;
 }
+
+:root {
+    --color-accent: gold;
+    --color-border: #ccc;
+    accent-color: var(--color-accent);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-accent: goldenrod;
+    }
+}
+
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif ;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 2px solid var(--color-border);
+    margin-bottom: 20px;
+}
+
+nav a {
+    flex: 1;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    padding: 10px;
+}
+
+nav a:hover {
+    background-color: gold;
+    color:black;
+    border-bottom: 4px solid var(--color-accent);
+}
+
+nav a:current {
+    border-bottom: 4px solid var(--color-accent);
+    font-weight: bold;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 10px;
+}
+
+label {
+    align-self: center;
+}
+
+input, textarea, button {
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+button {
+    grid-column: 1 / -1;
+    background-color: var(--color-accent);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: gold;
+    color: black
+}
+
+.projects { 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220pc, 1fr));
+    gap: 15px;
+}
+
+.projects article {
+    border: 1px solid var(--color-border);
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #fff8e1;
+}
+
+.projects h2 {
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
