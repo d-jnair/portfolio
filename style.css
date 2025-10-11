@@ -87,7 +87,7 @@ button:hover {
 
 .projects { 
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220pc, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 15px;
 }
 
