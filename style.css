@@ -271,5 +271,5 @@ body.compact .cv-list {display: none;}
 .chip-icon {
     width: 1em;
     height: 1em;
-    filter: invert(1);
+    filter: invert();
 }
