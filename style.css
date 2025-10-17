@@ -13,7 +13,26 @@ body {
 
 @media (prefers-color-scheme: dark) {
     :root {
+        --color-border: oklch(70% 3% 200 / 40%);
         --color-accent: goldenrod;
+    }
+
+    body {
+        background-color: canvas;
+        color: canvastext;
+    }
+
+    nav {
+        border-bottom-color: var(--color-border);
+    }
+
+    nav a:hover {
+        background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+        color: canvastext;
+    }
+
+    .projects article {
+        background-color: color-mix(in oklch, canvas, var(--color-accent) 10%)
     }
 }
 
@@ -272,4 +291,16 @@ body.compact .cv-list {display: none;}
     width: 1em;
     height: 1em;
     filter: invert();
+}
+
+.color-scheme {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+html {
+    color-scheme: light dark;
+    background-color: canvas;
+    color: canvastext;
 }
