@@ -179,9 +179,13 @@ img {
 .projects h2 {
     margin: 0;
     font-size: 1.1rem;
+    color: black;
 }
 
-.projects p {margin: 0;}
+.projects p {
+    margin: 0;
+    color: black;
+}
 
 h1 { font-size: 4rem;}
 h1, h2, h3, h4, h5, h6 {
@@ -231,6 +235,7 @@ section > header h2 {
     border-radius: 999px;
     border: 0.1rem solid var(--color-border);
     margin-bottom: 0.5rem;
+    color: black;
 }
 
 details {
@@ -239,6 +244,7 @@ details {
     background: var(--resume-bg);
     padding: 0.6em 0.75em;
     margin: 0.6rem 0;
+    color: black;
 }
 
 summary {
@@ -259,6 +265,7 @@ details[open] summary::before {content: "◄ "}
 body.compact .cv-list {display: none;}
 
 .cv-item h3 {
+    color: black;
     margin-bottom: 0.2em;
     padding-bottom: 0.2em;
     border-bottom: 0.2em dashed var(--resume-accent-2);
