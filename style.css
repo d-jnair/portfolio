@@ -107,7 +107,7 @@ button:hover {
 
 .projects { 
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14eem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(14em, 1fr));
     gap: 1rem;
     align-items: start;
     grid-auto-rows: auto;
@@ -117,7 +117,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 0.7rem;
-    border: 10.1rem solid var(--color-border);
+    border: 0.1rem solid var(--color-border);
     padding: 0.7em;
     border-radius: 0.5em;
     background-color: #fff8e1;
@@ -310,4 +310,13 @@ html {
     color-scheme: light dark;
     background-color: canvas;
     color: canvastext;
+}
+
+@media (preferes-color-scheme: dark) {
+    :root[data-theme='dark'] {
+        --resume-accent: #fff7cc;
+        --resume-accent-2: gold;
+        --resume-bg: goldenrod;
+        --resume-chip: goldenrod;
+    }
 }
