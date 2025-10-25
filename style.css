@@ -124,6 +124,33 @@ button:hover {
     overflow: hidden;
 }
 
+#profile-stats {
+    margin: 2rem 0;
+    padding: 1rem;
+    background-color: #fff8e1;
+    border: 0.1em solid var(--color-border);
+    border-radius: 0.5em;
+}
+
+#profile-stats dl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 0;
+}
+
+#profile-stats dt {
+    grid-row: 1;
+    font-weight: bold;
+    color: var(--color-accent);
+}
+
+#profile-stats dd {
+    grid-row: 2;
+    margin: 0;
+    font-size: 1.2em;
+}
+
 .projects h2 {
     margin-top: 0;
     font-size: 1.1rem;

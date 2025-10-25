@@ -1,0 +1,74 @@
+[
+  {
+    "title": "SKINsight",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Led team of five results-oriented women to build an ML model that gives an ingredient-based product recommendation to potential product buyers, built on tokenization and sentiment analysis of user product reviews; collected, wrangled, and analyzed product data from Sephora, then tested different algorithms to find the best predictive model"
+  },
+  {
+    "title": "Cereal Analysis Dashboard",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Analyzed cereal nutritional data and pricing across different stores, creating visualizations to understand the relationship between nutritional content and price. Used Python with pandas, matplotlib, and seaborn for data analysis and visualization."
+  },
+  {
+    "title": "Abortion Access Data Visualization",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Created interactive visualizations analyzing abortion access data by state, focusing on deceptive practices and access barriers. Used Python for data processing and visualization to highlight disparities in reproductive healthcare access."
+  },
+  {
+    "title": "Machine Learning Model Comparison",
+    "year": "2023",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Developed and compared multiple machine learning algorithms including linear regression, decision trees, and neural networks on various datasets. Implemented cross-validation and hyperparameter tuning to optimize model performance."
+  },
+  {
+    "title": "Web Scraping Data Pipeline",
+    "year": "2023",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Built a robust web scraping pipeline using Python and BeautifulSoup to collect product data from e-commerce websites. Implemented rate limiting, error handling, and data cleaning processes for reliable data collection."
+  },
+  {
+    "title": "Statistical Analysis of Climate Data",
+    "year": "2023",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Conducted comprehensive statistical analysis of climate change data using R and Python. Applied time series analysis, correlation studies, and regression modeling to identify trends and patterns in temperature and precipitation data."
+  },
+  {
+    "title": "Database Design and Implementation",
+    "year": "2022",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Designed and implemented a relational database system for a library management system. Created ER diagrams, normalized tables, and wrote complex SQL queries for data retrieval and reporting."
+  },
+  {
+    "title": "Algorithm Visualization Tool",
+    "year": "2022",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Developed an interactive web application to visualize sorting and searching algorithms. Used JavaScript and HTML5 Canvas to create step-by-step animations of algorithms like quicksort, mergesort, and binary search."
+  },
+  {
+    "title": "Natural Language Processing Project",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Implemented sentiment analysis and text classification models using transformer architectures. Fine-tuned BERT models for domain-specific text analysis and achieved high accuracy on custom datasets."
+  },
+  {
+    "title": "Computer Vision Object Detection",
+    "year": "2023",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Built an object detection system using YOLO and OpenCV for real-time image processing. Trained custom models on specific datasets and implemented the system for practical applications in retail and security."
+  },
+  {
+    "title": "Distributed Systems Simulation",
+    "year": "2022",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Simulated distributed computing systems using Java and message passing protocols. Implemented consensus algorithms, load balancing, and fault tolerance mechanisms to study system behavior under various conditions."
+  },
+  {
+    "title": "Mobile App Development",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Developed a cross-platform mobile application using React Native for task management and productivity. Integrated with cloud services, implemented offline functionality, and designed intuitive user interfaces."
+  }
+]
