@@ -6,69 +6,69 @@
     "description": "Led team of five results-oriented women to build an ML model that gives an ingredient-based product recommendation to potential product buyers, built on tokenization and sentiment analysis of user product reviews; collected, wrangled, and analyzed product data from Sephora, then tested different algorithms to find the best predictive model"
   },
   {
-    "title": "Cereal Analysis Dashboard",
-    "year": "2024",
+    "title": "COVID-19 Website",
+    "year": "2020",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Analyzed cereal nutritional data and pricing across different stores, creating visualizations to understand the relationship between nutritional content and price. Used Python with pandas, matplotlib, and seaborn for data analysis and visualization."
+    "description": "Compiled information about the COVID-19 outbreak. Interviewed doctors about best preventitive measures and presented educational materials."
   },
   {
-    "title": "Abortion Access Data Visualization",
-    "year": "2024",
+    "title": "COVID Tracker Map",
+    "year": "2020",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Created interactive visualizations analyzing abortion access data by state, focusing on deceptive practices and access barriers. Used Python for data processing and visualization to highlight disparities in reproductive healthcare access."
+    "description": "Paired with eSpatial to create an interactive map that tracked coronavirus outbreaks."
   },
   {
-    "title": "Machine Learning Model Comparison",
+    "title": "Project 4",
     "year": "2023",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Developed and compared multiple machine learning algorithms including linear regression, decision trees, and neural networks on various datasets. Implemented cross-validation and hyperparameter tuning to optimize model performance."
+    "description": "Details to come."
   },
   {
-    "title": "Web Scraping Data Pipeline",
+    "title": "Project 5",
     "year": "2023",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Built a robust web scraping pipeline using Python and BeautifulSoup to collect product data from e-commerce websites. Implemented rate limiting, error handling, and data cleaning processes for reliable data collection."
+    "description": "Details to come."
   },
   {
-    "title": "Statistical Analysis of Climate Data",
+    "title": "Project 6",
     "year": "2023",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Conducted comprehensive statistical analysis of climate change data using R and Python. Applied time series analysis, correlation studies, and regression modeling to identify trends and patterns in temperature and precipitation data."
+    "description": "Details to come."
   },
   {
-    "title": "Database Design and Implementation",
+    "title": "Project 7",
     "year": "2022",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Designed and implemented a relational database system for a library management system. Created ER diagrams, normalized tables, and wrote complex SQL queries for data retrieval and reporting."
+    "description": "Details to come."
   },
   {
-    "title": "Algorithm Visualization Tool",
+    "title": "Project 8",
     "year": "2022",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Developed an interactive web application to visualize sorting and searching algorithms. Used JavaScript and HTML5 Canvas to create step-by-step animations of algorithms like quicksort, mergesort, and binary search."
+    "description": "Details to come."
   },
   {
-    "title": "Natural Language Processing Project",
+    "title": "Project 9",
     "year": "2024",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Implemented sentiment analysis and text classification models using transformer architectures. Fine-tuned BERT models for domain-specific text analysis and achieved high accuracy on custom datasets."
+    "description": "Details to come."
   },
   {
-    "title": "Computer Vision Object Detection",
+    "title": "Project 10",
     "year": "2023",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Built an object detection system using YOLO and OpenCV for real-time image processing. Trained custom models on specific datasets and implemented the system for practical applications in retail and security."
+    "description": "Details to come."
   },
   {
-    "title": "Distributed Systems Simulation",
-    "year": "2022",
+    "title": "Project 11",
+    "year": "2020",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Simulated distributed computing systems using Java and message passing protocols. Implemented consensus algorithms, load balancing, and fault tolerance mechanisms to study system behavior under various conditions."
+    "description": "Details to come."
   },
   {
-    "title": "Mobile App Development",
+    "title": "Project 12",
     "year": "2024",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Developed a cross-platform mobile application using React Native for task management and productivity. Integrated with cloud services, implemented offline functionality, and designed intuitive user interfaces."
+    "description": "Details to come."
   }
 ]
