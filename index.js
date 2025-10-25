@@ -1,7 +1,7 @@
-import { fetchJSON, renderProjects, fetchGitHubData } from './global.js';
+import { fetchJSON, renderProjects, fetchGitHubData } from 'https://d-jnair.github.io/portfolio/global.js';
 
 // Fetch project data from JSON file
-const projects = await fetchJSON('./lib/projects.json');
+const projects = await fetchJSON('https://d-jnair.github.io/portfolio/lib/projects.json');
 
 // Get the first 3 projects for display on home page
 const latestProjects = projects.slice(0, 3);

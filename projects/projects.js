@@ -1,7 +1,7 @@
-import { fetchJSON, renderProjects } from '../global.js';
+import { fetchJSON, renderProjects } from 'https://d-jnair.github.io/portfolio/global.js';
 
 // Fetch project data from JSON file
-const projects = await fetchJSON('../lib/projects.json');
+const projects = await fetchJSON('https://d-jnair.github.io/portfolio/lib/projects.json');
 
 // Select the projects container
 const projectsContainer = document.querySelector('.projects');
