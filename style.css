@@ -149,6 +149,7 @@ button:hover {
     grid-row: 2;
     margin: 0;
     font-size: 1.2em;
+    color: black;
 }
 
 .projects h2 {

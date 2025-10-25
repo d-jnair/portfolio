@@ -83,14 +83,19 @@ form?.addEventListener('submit', (e) => {
 
 export async function fetchJSON(url) {
   try {
+    // Add cache-busting parameter to ensure fresh data
+    const cacheBustUrl = url + '?v=' + Date.now();
+    console.log('Fetching:', cacheBustUrl);
+    
     // Fetch the JSON file from the given URL
-    const response = await fetch(url);
+    const response = await fetch(cacheBustUrl);
     
     if (!response.ok) {
       throw new Error(`Failed to fetch projects: ${response.statusText}`);
     }
     
     const data = await response.json();
+    console.log('Data received:', data);
     return data;
   } catch (error) {
     console.error('Error fetching or parsing JSON data:', error);
