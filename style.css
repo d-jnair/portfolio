@@ -348,3 +348,97 @@ html {
         --resume-chip: goldenrod;
     }
 }
+
+.projects-visualization .container {
+  display: flex;
+  gap: 2em;
+  align-items: flex-start;
+}
+
+.legend {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(8em, 1fr));
+  gap: 0.5em;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.legend li.selected {
+  background: #f0f0f0;
+}
+
+.legend .swatch {
+  width: 1em;
+  height: 1em;
+  background-color: var(--color);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+#projects-pie-plot path.selected {
+  fill: oklch(60% 45% 0) !important;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.projects-visualization .container {
+    display: flex;
+    align-items: center;
+    gap: 2em;
+}
+
+#projects-pie-plot {
+    flex: 1;
+    max-width: 50%;
+    height: auto;
+}
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 0.5em 0.6em;
+    margin: 0;
+    list-style: none; /* remove bullets */
+    flex: 0 0 140px; /* fixed width for legend */
+    border: 0.1rem solid var(--color-border);
+    border-radius: 0.5em;
+    background: color-mix(in oklch, canvas, var(--color-accent) 8%);
+}
+
+.legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    cursor: pointer;
+}
+
+.legend li .swatch {
+    width: 0.9em;
+    height: 0.9em;
+    border-radius: 50%; /* circular swatch */
+    display: inline-block;
+}
+
+path {
+    cursor: pointer;
+    transition: 300ms;
+}
+svg:has(path:hover) path:not(:hover) {
+    opacity: 0.3;
+}
+.selected {
+    stroke: #000;
+    stroke-width: 2px;
+}
