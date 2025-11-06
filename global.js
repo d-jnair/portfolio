@@ -11,6 +11,7 @@ const pages = [
     {url: "cv/", title:"Resume"},
     {url: "projects/", title:"Projects"},
     {url: "contact/", title:"Contact"},
+    {url: "meta/", title:"Meta"},
     {url: "https://github.com/d-jnair", title:"GitHub"}
 ];
 
