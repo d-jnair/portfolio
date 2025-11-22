@@ -44,6 +44,45 @@ function processCommits(data) {
     });
 }
 
+function updateFileDisplay(filteredCommits) {
+  const lines = filteredCommits.flatMap((d) => d.lines);
+
+  // group by file, then sort by #lines descending
+  const files = d3
+    .groups(lines, (d) => d.file)
+    .map(([name, lines]) => ({ name, lines }))
+    .sort((a, b) => b.lines.length - a.lines.length);
+
+  // bind files to <div> children of <dl id="files">
+  const filesContainer = d3
+    .select('#files')
+    .selectAll('div')
+    .data(files, (d) => d.name)
+    .join(
+      (enter) =>
+        enter.append('div').call((div) => {
+          div.append('dt').append('code');
+          div.append('dd');
+        }),
+      (update) => update,
+      (exit) => exit.remove(),
+    );
+
+  // show file name + line count
+  filesContainer
+    .select('dt > code')
+    .html((d) => `${d.name}<br><small>${d.lines.length} lines</small>`);
+
+  // unit viz: one div.loc per line
+  filesContainer
+    .select('dd')
+    .selectAll('div')
+    .data((d) => d.lines)
+    .join('div')
+    .attr('class', 'loc');
+}
+
+
 // Step 1.3: Displaying summary stats
 function renderCommitInfo(data, commits) {
   const dl = d3.select('#stats').append('dl').attr('class', 'stats');
@@ -124,8 +163,102 @@ function renderCommitInfo(data, commits) {
   dl.append('dd').text(maxDay || 'N/A');
 }
 
-// Step 2: Scatterplot visualization
-let xScale, yScale; // Make scales accessible for brushing
+function updateCommitInfo(filteredCommits) {
+  // Flatten lines out of filtered commits
+  const filteredData = filteredCommits.flatMap((d) => d.lines);
+
+  // Grab the existing <dl class="stats"> created by renderCommitInfo
+  const dl = d3.select('#stats').select('dl.stats');
+  if (dl.empty()) return;
+
+  // Clear old contents
+  dl.selectAll('*').remove();
+
+  // --- Rebuild stats using filteredData + filteredCommits ---
+
+  // Total LOC
+  dl.append('dt').html('Total <abbr title="Lines of code">LOC</abbr>');
+  dl.append('dd').text(filteredData.length);
+
+  // Total commits
+  dl.append('dt').text('Total commits');
+  dl.append('dd').text(filteredCommits.length);
+
+  // Number of files
+  const numFiles = d3.group(filteredData, (d) => d.file).size;
+  dl.append('dt').text('Number of files');
+  dl.append('dd').text(numFiles);
+
+  // Maximum file length
+  const fileLengths = d3.rollups(
+    filteredData,
+    (v) => d3.max(v, (v) => v.line),
+    (d) => d.file,
+  );
+  const maxFileLength = d3.max(fileLengths, (d) => d[1]);
+  dl.append('dt').text('Maximum file length (lines)');
+  dl.append('dd').text(maxFileLength ?? 0);
+
+  // Longest file
+  const longestFileEntry = d3.greatest(fileLengths, (d) => d[1]);
+  const longestFile = longestFileEntry ? longestFileEntry[0] : 'N/A';
+  dl.append('dt').text('Longest file');
+  dl.append('dd').text(longestFile);
+
+  // Average file length
+  const averageFileLength = d3.mean(fileLengths, (d) => d[1]) ?? 0;
+  dl.append('dt').text('Average file length (lines)');
+  dl.append('dd').text(Math.round(averageFileLength));
+
+  // Average line length
+  const avgLineLength = d3.mean(filteredData, (d) => d.length) ?? 0;
+  dl.append('dt').text('Average line length (characters)');
+  dl.append('dd').text(Math.round(avgLineLength));
+
+  // Longest line
+  const longestLineEntry = d3.greatest(filteredData, (d) => d.length);
+  const longestLine = longestLineEntry ? longestLineEntry.length : 0;
+  dl.append('dt').text('Longest line (characters)');
+  dl.append('dd').text(longestLine);
+
+  // Maximum depth
+  const maxDepth = d3.max(filteredData, (d) => d.depth) ?? 0;
+  dl.append('dt').text('Maximum depth');
+  dl.append('dd').text(maxDepth);
+
+  // Average depth
+  const avgDepth = d3.mean(filteredData, (d) => d.depth) ?? 0;
+  dl.append('dt').text('Average depth');
+  dl.append('dd').text(avgDepth.toFixed(2));
+
+  // Time of day that most work is done
+  const workByPeriod = d3.rollups(
+    filteredData,
+    (v) => v.length,
+    (d) =>
+      new Date(d.datetime).toLocaleString('en', { dayPeriod: 'short' }),
+  );
+  const maxPeriod = d3.greatest(workByPeriod, (d) => d[1])?.[0];
+  dl.append('dt').text('Most productive time of day');
+  dl.append('dd').text(maxPeriod || 'N/A');
+
+  // Day of week that most work is done
+  const workByDay = d3.rollups(
+    filteredData,
+    (v) => v.length,
+    (d) =>
+      new Date(d.datetime).toLocaleString('en', { weekday: 'long' }),
+  );
+  const maxDay = d3.greatest(workByDay, (d) => d[1])?.[0];
+  dl.append('dt').text('Most productive day of week');
+  dl.append('dd').text(maxDay || 'N/A');
+}
+
+let xScale, yScale;
+let commitProgress = 100;
+let commitMaxTime;
+let timeScale;
+let filteredCommits;
 
 function renderScatterPlot(data, commits) {
   const width = 1000;
@@ -172,17 +305,18 @@ function renderScatterPlot(data, commits) {
     .axisLeft(yScale)
     .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00');
 
-  // Add X axis
-  svg
-    .append('g')
-    .attr('transform', `translate(0, ${usableArea.bottom})`)
-    .call(xAxis);
+    svg
+      .append('g')
+      .attr('class', 'x-axis')                              // NEW
+      .attr('transform', `translate(0, ${usableArea.bottom})`)
+      .call(xAxis);
 
-  // Add Y axis
-  svg
-    .append('g')
-    .attr('transform', `translate(${usableArea.left}, 0)`)
-    .call(yAxis);
+    // Add Y axis
+    svg
+      .append('g')
+      .attr('class', 'y-axis')                              // just for consistency
+      .attr('transform', `translate(${usableArea.left}, 0)`)
+  .call(yAxis);
 
   // Create radius scale for dot sizes
   const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
@@ -199,7 +333,7 @@ function renderScatterPlot(data, commits) {
 
   dots
     .selectAll('circle')
-    .data(sortedCommits)
+    .data(sortedCommits, (d) => d.id)
     .join('circle')
     .attr('cx', (d) => xScale(d.datetime))
     .attr('cy', (d) => yScale(d.hourFrac))
@@ -233,14 +367,85 @@ function renderScatterPlot(data, commits) {
       updateTooltipVisibility(false);
     });
 
-  // Step 5: Add brushing
   svg.call(d3.brush().on('start brush end', brushed));
-
-  // Raise dots and everything after overlay
   svg.selectAll('.dots, .overlay ~ *').raise();
 }
 
-// Step 3: Tooltip functions
+function updateScatterPlot(data, commits) {
+  const width = 1000;
+  const height = 600;
+  const margin = { top: 10, right: 10, bottom: 30, left: 20 };
+
+  const usableArea = {
+    top: margin.top,
+    right: width - margin.right,
+    bottom: height - margin.bottom,
+    left: margin.left,
+    width: width - margin.left - margin.right,
+    height: height - margin.top - margin.bottom,
+  };
+
+  const svg = d3.select('#chart').select('svg');
+
+  if (svg.empty()) return; // safety
+
+  // 1. update xScale domain
+  xScale
+    .domain(d3.extent(commits, (d) => d.datetime))
+    .nice();
+
+  // 2. recompute radius scale
+  const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([2, 30]);
+
+  // 3. update x-axis only (y-axis is unchanged)
+  const xAxis = d3
+    .axisBottom(xScale)
+    .tickFormat(d3.timeFormat('%b %d')); // or whatever number of ticks you like
+  svg.select('g.x-axis').call(xAxis);
+
+  // 4. update dots
+  const dots = svg.select('g.dots');
+  const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+
+  dots
+    .selectAll('circle')
+    .data(sortedCommits, (d) => d.id) // keep key!!
+    .join(
+      (enter) =>
+        enter
+          .append('circle')
+          .attr('cx', (d) => xScale(d.datetime))
+          .attr('cy', (d) => yScale(d.hourFrac))
+          .attr('r', (d) => rScale(d.totalLines))
+          .attr('fill', (d) => {
+            const hour = d.hourFrac;
+            if (hour >= 6 && hour < 12) return 'rgba(255, 165, 0, 0.7)'; // morning
+            if (hour >= 12 && hour < 18) return 'rgba(255, 200, 0, 0.7)'; // afternoon
+            if (hour >= 18 && hour < 22) return 'rgba(255, 140, 0, 0.7)'; // evening
+            return 'rgba(70, 130, 180, 0.7)'; // night
+          })
+          .style('fill-opacity', 0.7)
+          .on('mouseenter', (event, commit) => {
+            d3.select(event.currentTarget).style('fill-opacity', 1);
+            renderTooltipContent(commit);
+            updateTooltipVisibility(true);
+            updateTooltipPosition(event);
+          })
+          .on('mouseleave', (event) => {
+            d3.select(event.currentTarget).style('fill-opacity', 0.7);
+            updateTooltipVisibility(false);
+          }),
+      (update) => update,
+      (exit) => exit.remove(),
+    )
+    // ensure position/size updated for existing circles
+    .attr('cx', (d) => xScale(d.datetime))
+    .attr('cy', (d) => yScale(d.hourFrac))
+    .attr('r', (d) => rScale(d.totalLines));
+}
+
+
 function renderTooltipContent(commit) {
   const link = document.getElementById('commit-link');
   const date = document.getElementById('commit-date');
@@ -273,7 +478,6 @@ function updateTooltipPosition(event) {
   tooltip.style.top = `${event.clientY + 10}px`;
 }
 
-// Step 5: Brushing functions
 function isCommitSelected(selection, commit) {
   if (!selection) {
     return false;
@@ -311,14 +515,11 @@ function renderLanguageBreakdown(selection) {
   const requiredCommits = selectedCommits.length ? selectedCommits : commits;
   const lines = requiredCommits.flatMap((d) => d.lines);
 
-  // Use d3.rollup to count lines per language
   const breakdown = d3.rollup(
     lines,
     (v) => v.length,
     (d) => d.type,
   );
-
-  // Update DOM with breakdown
   container.innerHTML = '';
 
   for (const [language, count] of breakdown) {
@@ -341,14 +542,45 @@ function brushed(event) {
   renderLanguageBreakdown(selection);
 }
 
+function initTimeSlider() {
+  const slider = document.getElementById('commit-progress');
+  slider.addEventListener('input', onTimeSliderChange);
+  onTimeSliderChange();
+}
+
+function onTimeSliderChange() {
+  const slider = document.getElementById('commit-progress');
+  const timeEl = document.getElementById('commit-time');
+  commitProgress = Number(slider.value);
+  commitMaxTime = timeScale.invert(commitProgress);
+  timeEl.textContent = commitMaxTime.toLocaleString('en', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+  });
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+  updateScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+  updateCommitInfo(filteredCommits);
+}
+
+
 // Main execution
 let data, commits;
 
 async function main() {
   data = await loadData();
   commits = processCommits(data);
+  timeScale = d3
+    .scaleTime()
+    .domain(d3.extent(commits, (d) => d.datetime))
+    .range([0, 100]);
+  commitMaxTime = timeScale.invert(commitProgress);
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
   renderCommitInfo(data, commits);
-  renderScatterPlot(data, commits);
+  updateCommitInfo(filteredCommits);
+  renderScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+  initTimeSlider();
 }
 
 main();
