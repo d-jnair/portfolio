@@ -1,4 +1,5 @@
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+import scrollama from 'https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm';
 
 // Step 1.1: Reading the CSV file
 async function loadData() {
@@ -43,6 +44,40 @@ function processCommits(data) {
       return ret;
     });
 }
+
+function buildScatterStory(commits) {
+  d3.select('#scatter-story')
+    .selectAll('.step')
+    .data(commits)
+    .join('div')
+    .attr('class', 'step')
+    .html((d, i) => {
+      const dateStr = d.datetime.toLocaleString('en', {
+        dateStyle: 'full',
+        timeStyle: 'short',
+      });
+
+      const filesEdited = d3.rollups(
+        d.lines,
+        (D) => D.length,
+        (l) => l.file,
+      ).length;
+
+      return `
+        <p>
+          On <strong>${dateStr}</strong>,
+          I made <a href="${d.url}" target="_blank">
+          ${i > 0 ? 'another glorious commit' : 'my first glorious commit'}
+          </a>.
+        </p>
+        <p>
+          I edited <strong>${d.totalLines}</strong> lines
+          across <strong>${filesEdited}</strong> files.
+        </p>
+      `;
+    });
+}
+
 
 function updateFileDisplay(filteredCommits) {
   const lines = filteredCommits.flatMap((d) => d.lines);
@@ -449,7 +484,7 @@ function updateScatterPlot(data, commits) {
 function renderTooltipContent(commit) {
   const link = document.getElementById('commit-link');
   const date = document.getElementById('commit-date');
-  const time = document.getElementById('commit-time');
+  const time = document.getElementById('commit-tool-time');
   const author = document.getElementById('commit-author');
   const lines = document.getElementById('commit-lines');
 
@@ -563,6 +598,48 @@ function onTimeSliderChange() {
   updateCommitInfo(filteredCommits);
 }
 
+const scroller = scrollama();
+
+function onStepEnter(response) {
+  const commit = response.element.__data__; // D3's bound data
+
+  // 1. Set commitMaxTime to this commit's datetime
+  commitMaxTime = commit.datetime;
+
+  // 2. Sync slider & label so everything stays consistent
+  const slider = document.getElementById('commit-progress');
+  const timeEl = document.getElementById('commit-time');
+
+  commitProgress = timeScale(commitMaxTime);        // map date -> 0–100
+  slider.value = commitProgress;
+
+  timeEl.textContent = commitMaxTime.toLocaleString('en', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+  });
+
+  // 3. Recompute filtered commits up to this commit's time
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+
+  // 4. Update viz and stats (same as slider)
+  updateScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+  updateCommitInfo(filteredCommits);
+}
+
+function initScrollytelling() {
+  scroller
+    .setup({
+      container: '#scrolly-1',
+      step: '#scatter-story .step',
+      offset: 0.5, // trigger when the step's middle hits middle of viewport
+    })
+    .onStepEnter(onStepEnter);
+
+  // Recalculate on resize
+  window.addEventListener('resize', scroller.resize);
+}
+
 
 // Main execution
 let data, commits;
@@ -581,6 +658,8 @@ async function main() {
   renderScatterPlot(data, filteredCommits);
   updateFileDisplay(filteredCommits);
   initTimeSlider();
+  buildScatterStory(commits);
+  initScrollytelling();
 }
 
 main();

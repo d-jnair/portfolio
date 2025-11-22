@@ -23,31 +23,47 @@
     </label>
     </div>
 
+    <dl id="files"></dl>
+
     <div id="stats"></div>
 
     <h2>Commits by time of day</h2>
-    <div id="chart"></div>
-    <p id="selection-count">No commits selected</p>
-    <dl id="language-breakdown" class="stats"></dl>
 
-    <dl id="commit-tooltip" class="info tooltip" hidden>
-        <dt>Commit</dt>
-        <dd>
-            <a href="" id="commit-link" target="_blank"></a>
-        </dd>
+    <div id="scrolly-1">
+        <!-- LEFT COLUMN: narrative text (steps injected by D3) -->
+        <div id="scatter-story">
+            <!-- D3 will append <div class="step"> elements here -->
+        </div>
 
-        <dt>Date</dt>
-        <dd id="commit-date"></dd>
+    <!-- RIGHT COLUMN: the visualization itself -->
+        <div id="scatter-plot">
+            <div id="chart"></div>
+            <p id="selection-count">No commits selected</p>
+            <dl id="language-breakdown" class="stats"></dl>
 
-        <dt>Time</dt>
-        <dd id="commit-tool-time"></dd>
+            <!-- Tooltip goes here (can be anywhere in body, it's position: fixed) -->
+            <dl id="commit-tooltip" class="info tooltip" hidden>
+                <dt>Commit</dt>
+                <dd>
+                    <a href="" id="commit-link" target="_blank"></a>
+                </dd>
 
-        <dt>Author</dt>
-        <dd id="commit-author"></dd>
+            <dt>Date</dt>
+            <dd id="commit-date"></dd>
 
-        <dt>Lines edited</dt>
-        <dd id="commit-lines"></dd>
-    </dl>
+            <dt>Time</dt>
+            <dd id="commit-tool-time"></dd>
+
+            <dt>Author</dt>
+            <dd id="commit-author"></dd>
+
+            <dt>Lines edited</dt>
+            <dd id="commit-lines"></dd>
+            </dl>
+        </div>
+    </div>
+
+    <!-- File unit visualization stays after the scrolly block -->
     <dl id="files"></dl>
 
     <script src="https://d-jnair.github.io/portfolio/global.js" type="module" defer></script>
