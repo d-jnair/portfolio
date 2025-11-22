@@ -445,19 +445,41 @@ svg:has(path:hover) path:not(:hover) {
 
 /* Stats display */
 .stats {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0.5rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
     margin: 1rem 0;
+    align-items: baseline;
 }
 
 .stats dt {
-    font-weight: bold;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--color-accent);
+    margin: 0;
 }
 
 .stats dd {
+    font-size: 1.1rem;
+    font-weight: 600;
     margin: 0;
+    margin-right: 0.25rem;
+}
+
+.stats dt::after {
+  content: " ";
+}
+
+.stats dd::after {
+  content: "·";
+  opacity: 0.4;
+  margin-left: 0.4rem;
+}
+
+/* Remove trailing dot on last value (cosmetic) */
+.stats dd:last-of-type::after {
+  content: "";
 }
 
 /* Tooltip styles */
@@ -640,4 +662,13 @@ circle.selected {
 
 #scatter-story .step:last-child {
   margin-bottom: 50vh;
+}
+
+.loc {
+  display: flex;
+  width: 0.5em;
+  aspect-ratio: 1;
+  background: var(--color, steelblue); /* fallback */
+  border-radius: 50%;
+  transition: all 200ms;
 }

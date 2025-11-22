@@ -51,31 +51,25 @@ function buildScatterStory(commits) {
     .data(commits)
     .join('div')
     .attr('class', 'step')
-    .html((d, i) => {
-      const dateStr = d.datetime.toLocaleString('en', {
-        dateStyle: 'full',
-        timeStyle: 'short',
-      });
-
-      const filesEdited = d3.rollups(
-        d.lines,
-        (D) => D.length,
-        (l) => l.file,
-      ).length;
-
-      return `
-        <p>
-          On <strong>${dateStr}</strong>,
-          I made <a href="${d.url}" target="_blank">
-          ${i > 0 ? 'another glorious commit' : 'my first glorious commit'}
-          </a>.
-        </p>
-        <p>
-          I edited <strong>${d.totalLines}</strong> lines
-          across <strong>${filesEdited}</strong> files.
-        </p>
-      `;
-    });
+    .html(
+      (d, i) => `
+        On ${d.datetime.toLocaleString('en', {
+          dateStyle: 'full',
+          timeStyle: 'short',
+        })},
+        I made <a href="${d.url}" target="_blank">${
+        i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'
+      }</a>.
+        I edited ${d.totalLines} lines across ${
+          d3.rollups(
+            d.lines,
+            (D) => D.length,
+            (l) => l.file,
+          ).length
+        } files.
+        Then I looked over all I had made, and I saw that it was very good.
+      `,
+    );
 }
 
 
@@ -114,7 +108,8 @@ function updateFileDisplay(filteredCommits) {
     .selectAll('div')
     .data((d) => d.lines)
     .join('div')
-    .attr('class', 'loc');
+    .attr('class', 'loc')
+    .attr('style', (line) => `--color: ${colors(line.type)}`);
 }
 
 
@@ -294,6 +289,7 @@ let commitProgress = 100;
 let commitMaxTime;
 let timeScale;
 let filteredCommits;
+let colors = d3.scaleOrdinal(d3.schemeTableau10);
 
 function renderScatterPlot(data, commits) {
   const width = 1000;
@@ -322,7 +318,7 @@ function renderScatterPlot(data, commits) {
     .range([usableArea.left, usableArea.right])
     .nice();
 
-  yScale = d3.scaleLinear().domain([0, 24]).range([usableArea.bottom, usableArea.top]);
+  yScale = d3.scaleLinear().domain([0, 24]).range([usableArea.top, usableArea.bottom]);
 
   // Add gridlines BEFORE the axes
   const gridlines = svg
@@ -338,7 +334,10 @@ function renderScatterPlot(data, commits) {
   const xAxis = d3.axisBottom(xScale);
   const yAxis = d3
     .axisLeft(yScale)
-    .tickFormat((d) => String(d % 24).padStart(2, '0') + ':00');
+    .tickFormat((d) => {
+    const date = new Date(2000, 0, 1, d); // d = hour 0–24
+    return d3.timeFormat('%-I %p')(date);
+  });
 
     svg
       .append('g')
@@ -647,6 +646,7 @@ let data, commits;
 async function main() {
   data = await loadData();
   commits = processCommits(data);
+  commits = d3.sort(commits, (d) => d.datetime);
   timeScale = d3
     .scaleTime()
     .domain(d3.extent(commits, (d) => d.datetime))
@@ -657,6 +657,29 @@ async function main() {
   updateCommitInfo(filteredCommits);
   renderScatterPlot(data, filteredCommits);
   updateFileDisplay(filteredCommits);
+  d3.select('#scatter-story')
+    .selectAll('.step')
+    .data(commits)
+    .join('div')
+    .attr('class', 'step')
+    .html(
+      (d, i) => `
+        On ${d.datetime.toLocaleString('en', {
+          dateStyle: 'full',
+          timeStyle: 'short',
+        })},
+        I made <a href="${d.url}" target="_blank">${
+          i > 0 ? 'another glorious commit' : 'my first commit, and it was glorious'
+        }</a>.
+        I edited ${d.totalLines} lines across ${
+          d3.rollups(
+            d.lines,
+            (D) => D.length,
+            (l) => l.file,
+          ).length
+        } files.
+      `,
+    );
   initTimeSlider();
   buildScatterStory(commits);
   initScrollytelling();
